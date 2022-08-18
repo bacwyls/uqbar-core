@@ -266,7 +266,7 @@
     =^  hsibs=(unit (list phash))  app  (merk-sibs p.u.p.target axis.f)
     ?~  hsibs  [%&^~ app]
     :-
-    [%& ~ u.u.mutant [%10 axis.f u.hval u.htar u.holdleaf u.hsibs]^(welp q.u.p.target q.u.p.value)]
+    [%& ~ u.u.mutant [%10 axis.f u.hval u.htar u.holdleaf u.hsibs]^(welp q.u.p.value q.u.p.target)]
     app
     ::app(hit [%10 axis.f u.hval u.htar u.holdleaf u.hsibs]^(welp hit1 hit2))
   ::
