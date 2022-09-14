@@ -158,6 +158,8 @@
     ::  batching
     ::
         %trigger-batch
+      ~>  %bout
+      ~&  >  "%sequencer: creating batch"
       ?>  =(src.bowl our.bowl)
       ?.  =(%available status.state)
         ~|("%sequencer: error: got poke while not active" !!)

@@ -319,7 +319,8 @@
       ::  this is a crash..
       ~&  317  [%|^trace app]
     ?~  cost=(~(get by jets) tag)
-      ~&  >>  "no jet found"  [%&^~ app]
+      ::  ~&  >>  "no jet found"
+      [%&^~ app]
     ?:  (lth bud u.cost)  [%&^~ app]
     :-  (run-jet tag sam u.cost)
     app(bud (sub bud u.cost))

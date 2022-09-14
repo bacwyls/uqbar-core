@@ -11,8 +11,6 @@
 ++  whitelist
   ^-  (set ship)
   %-  ~(gas in *(set ship))
-  :~  ::  fakeships for localhost testnets
-      ::  edit this locally on your own rollup.hoon host
-      ~zod  ~bus  ~nec  ~wet  ~rys
+  :~  ~bacdun
   ==
 --
