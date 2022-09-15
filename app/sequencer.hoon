@@ -77,7 +77,6 @@
   |^
   ?.  ?=(%sequencer-town-action mark)
     ~|("%sequencer: error: got erroneous %poke" !!)
-  ?>  (allowed-participant [src our now]:bowl)
   =^  cards  state
     (handle-poke !<(town-action vase))
   [cards this]
@@ -158,8 +157,6 @@
     ::  batching
     ::
         %trigger-batch
-      ~>  %bout
-      ~&  >  "%sequencer: creating batch"
       ?>  =(src.bowl our.bowl)
       ?.  =(%available status.state)
         ~|("%sequencer: error: got poke while not active" !!)

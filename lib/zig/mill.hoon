@@ -65,6 +65,8 @@
     ^-  [state-transition rejected=carton]
     |^
     ::
+    ~>  %bout
+    ~&  >  "mill: creating state transition"
     =/  pending
       ::  sort in REVERSE since each pass will reconstruct by appending
       ::  rejected to front, so need to +flop before each pass
