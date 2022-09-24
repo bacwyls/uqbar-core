@@ -36,7 +36,7 @@
 ::    fields, see `lib/jolds.hoon` docstring for the spec
 ::    and `lib/zig/contracts/lib/*interface-types.hoon`
 ::    for examples.
-::    
+::
 ::    When used in combination, the `/json` prefix must
 ::    come before the `/newest` prefix, so a valid example
 ::    is `/x/json/newest/holder/0xdead.beef`.
@@ -441,6 +441,8 @@
         rollup-root-path
       ::
           %fact
+        ~>  %bout
+        ~&  >  "%indexer: handling new batch update"
         =^  cards  state
           %-  consume-rollup-update
           !<(rollup-update:seq q.cage.sign)

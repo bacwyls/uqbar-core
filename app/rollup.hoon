@@ -98,6 +98,8 @@
       [%pass /bridge %agent [q.sequencer.u.hall %sequencer] %poke -]~
     ::
         %receive-batch
+      ~>  %bout
+      ~&  >  "%rollup: receiving batch"
       ?~  hall=(~(get by capitol.state) town-id.act)
         ~|("%rollup: rejecting batch; town not found" !!)
       ?.  =([from.act src.bowl] sequencer.u.hall)

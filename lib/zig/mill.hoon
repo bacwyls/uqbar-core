@@ -65,6 +65,8 @@
     ^-  [state-transition rejected=carton]
     |^
     ::
+    ~>  %bout
+    ~&  >  "mill: creating state transition"
     =/  pending
       ::  sort in REVERSE since each pass will reconstruct by appending
       ::  rejected to front, so need to +flop before each pass
@@ -173,8 +175,10 @@
   ++  mill
     |=  [=land =egg:smart]
     ^-  [fee=@ud ^land burned=granary =errorcode:smart hits=(list hints) =crow:smart]
+    ~>  %bout
+    ~&  >  "mill: processing transaction from {<id.from.shell.egg>}"
     ::  validate transaction signature
-    ?.  ?:(!test-mode (verify-sig egg) %.y)
+    ?.  (verify-sig egg)
       ~&  >>>  "mill: signature mismatch"
       [0 [~ q.land] ~ %2 ~ ~]  ::  signed tx doesn't match account
     ::
@@ -339,6 +343,7 @@
         |=  [to=id:smart budget=@ud]
         ^-  [hints (unit chick:smart) rem=@ud =errorcode:smart]
         ~>  %bout
+        ~&  >  "weed: executing contract"
         ?~  cont.wheat   [~ ~ budget %6]
         =/  =cart:smart  [to from batch town-id]
         =/  payload   .*(q.library pay.u.cont.wheat)
@@ -366,9 +371,10 @@
         ^-  (unit [path=(list phash) product=*])
         ?.  ?=([%0 %granary @ ~] +.pat)   ~
         ?~  id=(slaw %ux -.+.+.+.pat)     ~
-        ~&  >>  "looking for grain: {<`@ux`u.id>}"
+        ::  ~&  >>  "looking for grain: {<`@ux`u.id>}"
         ?~  grain=(get:big granary u.id)
-          ~&  >>>  "didn't find it"  ~
+          ::  ~&  >>>  "didn't find it"
+          ~
         ::  TODO populate path using +mek in merk
         `[(mek:big granary u.id) u.grain]
       --

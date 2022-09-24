@@ -319,7 +319,8 @@
       ::  this is a crash..
       ~&  317  [%|^trace app]
     ?~  cost=(~(get by jets) tag)
-      ~&  >>  "no jet found"  [%&^~ app]
+      ::  ~&  >>  "no jet found"
+      [%&^~ app]
     ?:  (lth bud u.cost)  [%&^~ app]
     :-  (run-jet tag sam u.cost)
     app(bud (sub bud u.cost))
@@ -502,6 +503,36 @@
     ::
         %shag
       %&^(some (shag:merk sam))
+    ::                                                                       ::
+    ::  crypto                                                               ::
+    ::                                                                       ::
+        %k224
+      ?.  ?=([@ud @] sam)  %|^trace
+      %&^(some (keccak-224:keccak:crypto sam))
+    ::
+        %k256
+      ?.  ?=([@ud @] sam)  %|^trace
+      %&^(some (keccak-256:keccak:crypto sam))
+    ::
+        %k384
+      ?.  ?=([@ud @] sam)  %|^trace
+      %&^(some (keccak-384:keccak:crypto sam))
+    ::
+        %k512
+      ?.  ?=([@ud @] sam)  %|^trace
+      %&^(some (keccak-512:keccak:crypto sam))
+    ::
+        %make
+      ?.  ?=([@uvI @] sam)  %|^trace
+      %&^(some (make-k:secp256k1:secp:crypto sam))
+    ::
+        %sign
+      ?.  ?=([@uvI @] sam)  %|^trace
+      %&^(some (ecdsa-raw-sign:secp256k1:secp:crypto sam))
+    ::
+        %reco
+      ?.  ?=([@ [@ @ @]] sam)  %|^trace
+      %&^(some (ecdsa-raw-recover:secp256k1:secp:crypto sam))
     ==
   ::
   ++  frag
