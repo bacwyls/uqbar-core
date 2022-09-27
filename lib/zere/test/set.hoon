@@ -15,37 +15,42 @@
 ++  unbalanced-e  [1 [3 ~ ~] [2 ~ ~]]
 --
 %-  tests:mk
-:~  :-  'has'
+:~
+:: :~  :-  'has'
+::     %-  tests:mk
+::     :~  has+(mint:mk (crip "(~(has pin `(pset)`{<test-set>}) 5)"))
+::         has-head+(mint:mk (crip "(~(has pin `(pset)`{<test-set>}) 10)"))
+::         not-has-branch-right+(mint:mk (crip "(~(has pin `(pset)`{<test-set>}) 32)"))
+::         not-has-branch-left+(mint:mk (crip "(~(has pin `(pset)`{<test-set>}) 39)"))
+::         not-has-head-branch-left+(mint:mk '(~(has pin `(pset)`[34 ~ ~]) 65)')
+::         not-has-head-branch-right+(mint:mk '(~(has pin `(pset)`[34 ~ ~]) 10)')
+::     ==
+::     :-  'put'
+::     %-  tests:mk
+::     :~  put+(mint:mk (crip "(~(put pin `(pset)`{<test-set>}) 20)"))
+::         put-exists+(mint:mk (crip "(~(put pin `(pset)`{<test-set>}) 11)"))
+::         put-exists-head+(mint:mk (crip "(~(put pin `(pset)`{<test-set>}) 10)"))
+::     ==
+::     :-  'tap'
+::     %-  tests:mk
+::     :~  tap+(mint:mk (crip "~(tap pin `(pset)`{<test-set>})"))
+::         tap-empty+(mint:mk (crip "~(tap pin `(pset)`~)"))
+::         tap-one+(mint:mk (crip "~(tap pin `(pset)`[n=10 ~ ~])"))
+::         tap-two-left+(mint:mk (crip "~(tap pin `(pset)`[n=10 l=[n=3 ~ ~] ~])"))
+::         tap-two-right+(mint:mk (crip "~(tap pin `(pset)`[n=10 ~ r=[n=5 ~ ~]])"))
+::         tap-three-right+(mint:mk (crip "~(tap pin `(pset)`[n=10 l=[n=3 ~ ~] r=[n=5 ~ ~]])"))
+::     ==
+::     :-  'apt'
+::     %-  tests:mk
+::     :~  apt-balanced-a+(mint:mk (crip "~(apt pin `(pset)`{<balanced-a>})"))
+::         apt-unbalanced-a+(mint:mk (crip "~(apt pin `(pset)`{<unbalanced-a>})"))
+::         apt-unbalanced-b+(mint:mk (crip "~(apt pin `(pset)`{<unbalanced-b>})"))
+::         apt-unbalanced-c+(mint:mk (crip "~(apt pin `(pset)`{<unbalanced-c>})"))
+::         apt-unbalanced-d+(mint:mk (crip "~(apt pin `(pset)`{<unbalanced-d>})"))
+::         apt-unbalanced-e+(mint:mk (crip "~(apt pin `(pset)`{<unbalanced-e>})"))
+::     ==
+    :-  'gas'
     %-  tests:mk
-    :~  has-pin+(mint:mk (crip "(~(has pin `(pset)`{<test-set>}) 5)"))
-        has-pin-head+(mint:mk (crip "(~(has pin `(pset)`{<test-set>}) 10)"))
-        not-has-pin-branch-right+(mint:mk (crip "(~(has pin `(pset)`{<test-set>}) 32)"))
-        not-has-pin-branch-left+(mint:mk (crip "(~(has pin `(pset)`{<test-set>}) 39)"))
-        not-has-pin-head-branch-left+(mint:mk '(~(has pin `(pset)`[34 ~ ~]) 65)')
-        not-has-pin-head-branch-right+(mint:mk '(~(has pin `(pset)`[34 ~ ~]) 10)')
-    ==
-    :-  'pin'
-    %-  tests:mk
-    :~  put-pin+(mint:mk (crip "(~(put pin `(pset)`{<test-set>}) 20)"))
-        put-pin-exists+(mint:mk (crip "(~(put pin `(pset)`{<test-set>}) 11)"))
-        put-pin-exists-head+(mint:mk (crip "(~(put pin `(pset)`{<test-set>}) 10)"))
-    ==
-    :-  'tap'
-    %-  tests:mk
-    :~  tap-pin+(mint:mk (crip "~(tap pin `(pset)`{<test-set>})"))
-        tap-pin-empty+(mint:mk (crip "~(tap pin `(pset)`~)"))
-        tap-pin-one+(mint:mk (crip "~(tap pin `(pset)`[n=10 ~ ~])"))
-        tap-pin-two-left+(mint:mk (crip "~(tap pin `(pset)`[n=10 l=[n=3 ~ ~] ~])"))
-        tap-pin-two-right+(mint:mk (crip "~(tap pin `(pset)`[n=10 ~ r=[n=5 ~ ~]])"))
-        tap-pin-three-right+(mint:mk (crip "~(tap pin `(pset)`[n=10 l=[n=3 ~ ~] r=[n=5 ~ ~]])"))
-    ==
-    :-  'apt'
-    %-  tests:mk
-    :~  apt-balanced-a+(mint:mk (crip "~(apt pin `(pset)`{<balanced-a>})"))
-        apt-unbalanced-a+(mint:mk (crip "~(apt pin `(pset)`{<unbalanced-a>})"))
-        apt-unbalanced-b+(mint:mk (crip "~(apt pin `(pset)`{<unbalanced-b>})"))
-        apt-unbalanced-c+(mint:mk (crip "~(apt pin `(pset)`{<unbalanced-c>})"))
-        apt-unbalanced-d+(mint:mk (crip "~(apt pin `(pset)`{<unbalanced-d>})"))
-        apt-unbalanced-e+(mint:mk (crip "~(apt pin `(pset)`{<unbalanced-e>})"))
+    :~  gas+(mint:mk (crip "(~(gas pin `(pset)`{<test-set>}) ~[20 21 22])"))
     ==
 ==

@@ -1,5 +1,6 @@
 /-  *zink
 /+  *zink-pedersen, *zink-json
+/+  cc=zink-cache
 =>  |%
     +$  good      (unit *)
     +$  fail      (list [@ta *])
@@ -646,7 +647,7 @@
       ?~  sam=((soft ,[set=(tree) val=*]) sam)  [%|^trace ~]^app
       =>  .(sam u.sam)
       =^  res  app
-        (put-in-tree set.sam val.sam pgor pmor test same)
+        (put-in-tree-hint set.sam val.sam pgor pmor test same)
       =^  hset  app  (hash set.sam)
       =^  hval  app  (hash val.sam)
       ?.  ?=(%& +<.res)
@@ -702,6 +703,70 @@
           nodes+(en-hash-tree nodes)
       ==
     ::
+        [%$ %gas %pin]
+      ?~  sam=((soft ,[set=(tree) list=(list)]) sam)  [%|^trace ~]^app
+      =>  .(sam u.sam)
+      =^  hset  app  (hash set.sam)
+      =^  hlist  app  (hash list.sam)
+      =^  [res=(tree) diff=gas-diff lax=(list (pair phash axis))]  app
+        (gas-in-tree-hint set.sam list.sam pgor pmor test same)
+      =^  aptc  app  (apt-in-tree-test res pgor pmor)
+      :: ~&  hmm+[=(-:(hash-from-diff:cc(cax cax) a  -:(hash res))]
+      :: ~&  hmm+aptc
+      :: ~&  wtf+[443 +443:set.sam]
+      :: ~&  wtf+[220 +220:set.sam]
+      :: ~&  wtf+[111 +111:set.sam]
+      :: ~&  wtf+[54 +54:set.sam]
+      :: ~&  wtf+[26 +26:set.sam]
+      :: ~&  wtf+[12 +12:set.sam]
+      :: ~&  wtf+[7 +7:set.sam]
+      :: ~&  wtf+[2 +2:set.sam]
+      :: ~&  %grrr
+      :: ~&  wtfa+[443 .*(set.sam [0 443])]
+      :: ~&  wtfb+[(div 443 2) .*(set.sam [0 (div 443 2)])]
+      :: ~&  wtfa+[220 .*(set.sam [0 220])]
+      :: ~&  wtfb+[(div 220 2) .*(set.sam [0 (div 220 2)])]
+      :: ~&  wtfa+[111 .*(set.sam [0 111])]
+      :: ~&  wtfb+[(div 111 2) .*(set.sam [0 (div 111 2)])]
+      :: ~&  wtfa+[54 .*(set.sam [0 54])]
+      :: ~&  wtfb+[(div 54 2) .*(set.sam [0 (div 54 2)])]
+      :: ~&  wtfa+[26 .*(set.sam [0 26])]
+      :: ~&  wtfb+[(div 26 2) .*(set.sam [0 (div 26 2)])]
+      :: ~&  wtfa+[12 .*(set.sam [0 12])]
+      :: ~&  wtfb+[(div 12 2) .*(set.sam [0 (div 12 2)])]
+      :: ~&  wtfa+[7 .*(set.sam [0 7])]
+      :: ~&  wtfb+[(div 7 2) .*(set.sam [0 (div 7 2)])]
+      :: ~&  wtfa+[2 .*(set.sam [0 2])]
+      :: ~&  wtfb+[(div 2 2) .*(set.sam [0 (div 2 2)])]
+      :: ~&  %grrr
+      :: ~&  wtfa+[`@ub`443 .*(set.sam [0 443])]
+      :: ~&  wtfb+[`@ub`(div 443 2) .*(set.sam [0 (div 443 2)])]
+      :: ~&  wtfa+[`@ub`220 .*(set.sam [0 220])]
+      :: ~&  wtfb+[`@ub`(div 220 2) .*(set.sam [0 (div 220 2)])]
+      :: ~&  wtfa+[`@ub`111 .*(set.sam [0 111])]
+      :: ~&  wtfb+[`@ub`(div 111 2) .*(set.sam [0 (div 111 2)])]
+      :: ~&  wtfa+[`@ub`54 .*(set.sam [0 54])]
+      :: ~&  wtfb+[`@ub`(div 54 2) .*(set.sam [0 (div 54 2)])]
+      :: ~&  wtfa+[`@ub`26 .*(set.sam [0 26])]
+      :: ~&  wtfb+[`@ub`(div 26 2) .*(set.sam [0 (div 26 2)])]
+      :: ~&  wtfa+[`@ub`12 .*(set.sam [0 12])]
+      :: ~&  wtfb+[`@ub`(div 12 2) .*(set.sam [0 (div 12 2)])]
+      :: ~&  wtfa+[`@ub`7 .*(set.sam [0 7])]
+      :: ~&  wtfb+[`@ub`(div 7 2) .*(set.sam [0 (div 7 2)])]
+      :: ~&  wtfa+[`@ub`2 .*(set.sam [0 2])]
+      :: ~&  wtfb+[`@ub`(div 2 2) .*(set.sam [0 (div 2 2)])]
+      :: ~&  wtaf+[~(tap in res)]
+      =-  [%&^~^res hit]^app
+      ^-  hit=hints
+      :_  ~
+      :+  %jet  jet
+      %-  pairs:enjs:format
+      :~  set+(num:enjs hset)
+          list+(num:enjs hlist)
+          lax+a+(turn lax |=((pair phash axis) a+(num:enjs p)^(num:enjs q)^~))
+          diff+(en-gas-diff diff)
+      ==
+    ::
         [%$ %zock]
      ?.  ?=([bud=(unit @) [s=* f=*] scry=*] sam)  [%|^trace ~]^app
       =^  shash  app  (hash s.sam)
@@ -746,6 +811,7 @@
     ==
   ::
   +$  hash-tree  (tree [n=phash l=phash r=phash])
+  +$  gas-diff  (build-diff-mold [i=(list @) diff-node] diff-node)
   ++  en-hash-tree
     |=  =hash-tree
     |-  ^-  json
@@ -757,6 +823,36 @@
         l+$(hash-tree l.hash-tree)
         r+$(hash-tree r.hash-tree)
     ==
+  ::
+  ++  en-diff-node 
+    |=  =diff-node
+    ^-  json
+    %-  pairs:enjs:format
+    :~  hash+(num:enjs p.diff-node)
+        axis+(fall (bind q.diff-node num:enjs) ~)
+    ==
+  ::
+  ++  en-gas-diff
+    |=  =gas-diff
+    |^  ^-  json
+    ?~  gas-diff  ~
+    %-  pairs:enjs:format
+    :~  nn+en-hn
+        nl+(en-diff-node l.n.gas-diff)
+        nr+(en-diff-node r.n.gas-diff)
+        l+$(gas-diff l.gas-diff)
+        r+$(gas-diff r.gas-diff)
+    ==
+    ::
+    ++  en-hn
+      ^-  json
+      ?>  ?=(^ gas-diff)
+      %-  pairs:enjs:format
+      :~  indices+a+(turn i.n.n.gas-diff num:enjs)
+          hash+(num:enjs p.n.n.gas-diff)
+          axis+(fall (bind q.n.n.gas-diff num:enjs) ~)
+      ==
+    --
   ::
   ++  pgor
     |=  [a=* b=*]
@@ -797,7 +893,7 @@
     =^  hla  app  (hash l.a)
     $(a r.a, axis (peg axis 7), path hla^hna^path)
   ::
-  ++  put-in-tree
+  ++  put-in-tree-hint
     |*  $:  a=(tree)  b=*
             gor=$-(^ [(unit ?) appendix])
             mor=$-(^ [(unit ?) appendix])
@@ -848,6 +944,87 @@
       a        ?:(u.m a(r a.c) a.c(l a(r l.a.c)))
     ==
   ::
+  ++  put-in-tree
+    |*  $:  a=(tree)  b=*
+            gor=$-(^ [(unit ?) appendix])
+            mor=$-(^ [(unit ?) appendix])
+            eq=$-(^ ?)
+            get=$-(* *)
+        ==
+    |-  ^-  [_a appendix]
+    ?~  a
+      [b ~ ~]^app
+    ?:  (eq (get b) (get n.a))
+      [b l.a r.a]^app
+    =^  g  app  (gor b n.a)
+    ?>  ?=(^ g)
+    ?:  u.g
+      =^  c  app  $(a l.a)
+      ?>  ?=(^ c)
+      =^  m  app  (mor n.a n.c)
+      ?>  ?=(^ m)
+      :_  app
+      ?:(u.m a(l c) c(r a(l r.c)))
+    =^  c  app  $(a r.a)
+    ?>  ?=(^ c)
+    =^  m  app  (mor n.a n.c)
+    ?>  ?=(^ m)
+    :_  app
+    ?:(u.m a(r c) c(l a(r l.c)))
+  ::
+  ++  gas-in-tree-hint
+    |*  $:  a=(tree)  b=(list)
+          gor=$-(^ [(unit ?) appendix])
+          mor=$-(^ [(unit ?) appendix])
+          eq=$-(^ ?)
+          get=$-(* *)
+      ==
+    ^-  [[_a gas-diff (list (pair phash axis))] appendix]
+    =^  res  app  (gas-in-tree +6)
+    =^  diff  app  (diff-treap a res)
+    =^  hres  app  (hash res)
+    =^  hb  app  (hash-list b)
+    =/  iex  (zip hb (gulf 0 (dec (lent b))))
+    =-  [res diff (turn hb |=(a=phash [a (~(got by amap) a)]))]^app
+    =|  amap=(map phash axis)
+    =/  =axis  1
+    |-  ^-  [diff=gas-diff amap=(map phash _axis)]
+    ?~  diff  ~^amap
+    =^  ldiff  amap  $(diff l.diff, axis (peg axis 6))
+    =^  rdiff  amap  $(diff r.diff, axis (peg axis 7))
+    :_  (~(put by amap) p.n.n.diff (peg axis 2))
+    :_  [ldiff rdiff]
+    :_  +.n.diff
+    (murn iex |=([a=@ b=@] ?:(=(p.n.n.diff a) `b ~)))^n.n.diff
+  ::
+  ++  hash-list
+    |=  a=(list)
+    |-  ^-  [(list phash) appendix]
+    ?~  a  ~^app
+    =^  hi  app  (hash i.a)
+    =^  ht  app  $(a t.a)
+    [hi ht]^app
+  ::
+  ++  zip
+    |*  [a=(list) b=(list)]
+    ^-  (list _?>(?=(^ a) ?>(?=(^ b) [i.a i.b])))
+    ?~  a  ~
+    ?>  ?=(^ b)
+    :-  [i.a i.b] 
+    $(a t.a, b t.b)
+  ::
+  ++  gas-in-tree
+    |*  $:  a=(tree)  b=(list)
+            gor=$-(^ [(unit ?) appendix])
+            mor=$-(^ [(unit ?) appendix])
+            eq=$-(^ ?)
+            get=$-(* *)
+        ==
+    |-  ^-  [_a appendix]
+    ?~  b  a^app
+    =^  c  app  (put-in-tree a i.b gor mor eq get)
+    $(b t.b, a c)
+  ::
   ++  tap-in-tree
     |=  a=(tree)
     ^-  [[res=(list) nodes=hash-tree] appendix]
@@ -862,6 +1039,51 @@
     =^  r  app  $(a r.a, res n.a^res.l)
     :_  app
     r(nodes [n=[hna hla hra] nodes.l nodes.r])
+  ::
+  ++  apt-in-tree-test
+    |*  $:  a=(tree)
+            gor=$-(^ [(unit ?) appendix])
+            mor=$-(^ [(unit ?) appendix])
+        ==
+    ^-  [? appendix]
+    ?:  =(a ~)  %&^app
+    =|  [un=(unit) l=(unit) r=(unit)]
+    =|  path=(list ?(%l %r))
+    =/  =axis  1
+    |-  ^-  $_  ^$
+    ?~  a  %&^app
+    =^  hna  app  (hash n.a)
+    =^  hla  app  ?~(l.a 0^app (hash l.a))
+    =^  hra  app  ?~(r.a 0^app (hash r.a))
+    =^  hul  app  ?~(l 0^app (hash u.l))
+    =^  hur  app  ?~(r 0^app (hash u.r))
+    :: ~&  path+path
+    :: ~&  n+[`@ub`(peg axis 2) `@ui`hna]
+    :: ~&  l+[`@ub`(peg axis 6) `@ui`hla]
+    :: ~&  r+[`@ub`(peg axis 7) `@ui`hra]
+    :: ~&  ul+`@ui`hul
+    :: ~&  ur+`@ui`hur
+    =^  g-na-ul   app  ?~(l %&^app ((app-lift need) (gor n.a u.l)))
+    ?.  g-na-ul  %|^app
+    =^  g-ur-na   app  ?~(r %&^app ((app-lift need) (gor u.r n.a)))
+    ?.  g-ur-na  %|^app
+    =^  m-na-ul   app  ?~(un %&^app ((app-lift need) (mor u.un n.a)))
+    ?.  m-na-ul  %|^app
+    =^  m-ur-na   app  ?~(un %&^app ((app-lift need) (mor u.un n.a)))
+    ?.  m-ur-na  %|^app
+    :: todo: prob more efficient to do mor first
+    :: but zere jet is easier if not more efficient to write
+    :: apt'ing l/r first
+    =^  apt-la  app  $(a l.a, l `n.a, un `n.a, path (flop `?(%l %r)`%l path), axis (peg axis 6))
+    ?.  apt-la  %|^app
+    =^  apt-ra  app  $(a r.a, r `n.a, un `n.a, path (flop `?(%l %r)`%r path), axis (peg axis 7))
+    ?.  apt-ra  %|^app
+    %&^app
+  ::
+  ++  app-lift
+    |*  a=$-(* *)
+    |*  [b=* app=appendix]
+    (a b)^app
   ::
   ++  apt-in-tree
     |*  $:  a=(tree)
@@ -971,28 +1193,23 @@
   ::
   ++  hash
     |=  [n=*]
-    |-  ^-  [phash appendix]
+    ^-  [phash appendix]
     ::  test mode disables hashing, so it won't generate valid hints.
     ::  however, computation is *much* faster since hashing is the
     ::  most expensive aspect of the process.
     ?:  test-mode  [0x1 app]
-    =-  [-<- ->]
-    |-  ^-  [(pair phash @ud) appendix]
-    =/  mh  (~(get by cax) n)
-    ?^  mh
-      [u.mh app]
-    ?@  n
-      =/  h  (hash:pedersen n 0)
-      =/  v  [h 1]
-      :-  v
-      app(cax (~(put by cax) n v))
-    =^  vh  app  $(n -.n)
-    =^  vt  app  $(n +.n)
-    =/  h  (hash:pedersen p.vh p.vt)
-    =/  v
-      [h +((add q.vh q.vt))]
-    :-  v
-    app(cax (~(put by cax) n v))
+    =^  h  cc  (~(hash cc cax) n)
+    h^app(cax +6:cc)
+  ::
+  ++  diff-treap
+    |=  [a=(tree) b=(tree)]
+    ^-  [treap-diff appendix]
+    ::  test mode disables hashing, so it won't generate valid hints.
+    ::  however, computation is *much* faster since hashing is the
+    ::  most expensive aspect of the process.
+    ?:  test-mode  !!
+    =^  diff  cc  (~(diff-treap cc cax) a b)
+    diff^app(cax +6:cc)
   ::
   ++  frag
     |=  [axis=@ s=*]

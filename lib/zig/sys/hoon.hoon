@@ -4078,9 +4078,9 @@
               [%1 p=*]                                  ::  block
               [%2 p=(list tank)]                        ::  stack trace
           ==                                            ::
-+$  zoon  $%  [%0 bud=@ud product=*]             ::  success
-              [%1 bud=@ud]                       ::  crash
-              [%2 bud=@ud]                       ::  out of budget
++$  zoon  $%  [%0 bud=@ud product=*]                    ::  success
+              [%1 bud=@ud]                              ::  crash
+              [%2 bud=@ud]                              ::  out of budget
           ==                                            ::
 ++  wonk  =+  veq=$:edge                                ::  product from edge
           |@  ++  $  ?~(q.veq !! p.u.q.veq)             ::

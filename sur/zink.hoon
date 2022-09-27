@@ -3,7 +3,25 @@
   $-  ^
   (unit (unit *))
 ::
-+$  cache  (map * (pair phash @ud))
++$  cache  (map * cache-entry)
++$  cache-entry  (trel phash @ud data-jet)
++$  treap-entry  [p=phash q=@ud treap:data-jet]
++$  diff-node  (pair phash (unit axis))
++$  treap-diff  (build-diff-mold diff-node diff-node)
+++  build-diff-mold
+  |$  [nitem sibitem]
+  (tree [n=nitem l=sibitem r=sibitem])
+::
+++  data-jet
+  =<  data-jet
+  |%
+  +$  data-jet
+    $@  ~
+    $%  treap
+    ==
+  +$  treap  [%treap nax=(map phash (set axis)) subs=(set phash)]
+  --
+::
 +$  child  *
 +$  parent  *
 +$  phash  @                     ::  Pedersen hash
@@ -113,10 +131,11 @@
       [%$^%mink 1]  [%$^%mole 1]  [%$^%mule 1]  [%$^%mure 1]
       [%$^%mute 1]  [%$^%slum 1]  [%$^%zock 1]  [%$^%zole 1]
       [%$^%zule 1]  [%$^%zure 1]  [%$^%zute 1]  [%$^%zlum 1]
-    :: ::  smart-lib
+      :: smart-lib
       [%$^%pedersen-hash 10]  [%$^%keccak256^%keccak^%crypto 10]
       [%$^%ecdsa-raw-recover^%secp256k1^%secp^%crypto 10]
     ==
+::
 +$  jet
   $~  [%$ %add]
   $%  ::  hoon
@@ -137,7 +156,7 @@
       [%$ %rip]       [%$ %rsh]       [%$ %run]       [%$ %rut]
       [%$ %sew]       [%$ %swp]       [%$ %xeb]       [%$ %con]
       [%$ %dis]       [%$ %mix]       [%$ %pmug]      [%$ %aor]
-      [%$ %dor]       [%$ %pgor]      [%$ %pmor]     [%$ %pow]
+      [%$ %dor]       [%$ %pgor]      [%$ %pmor]      [%$ %pow]
       [%$ %sqt]
       ::  set
       [%$ %all %pin]    [%$ %any %pin]    [%apt %pin]    [%$ %bif %pin]

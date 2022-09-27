@@ -4,6 +4,8 @@
 ::  ::                                         ::  ::    ::  ::  ::  ::  ::  ::
 ::  ::  five: contract functions               ::  ::    ::  ::  ::  ::  ::  ::
 ::::::                                         ::::  ::  ::::::  ::  ::  ::  ::
+/+  hoon=zig-sys-hoon
+=>  hoon
 =<
 |%
 ::::  2e: pedersen hashing                              ::
