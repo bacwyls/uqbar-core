@@ -356,9 +356,9 @@
   =/  res=grain:smart  (got:big p.land.milled id.p:expected)
   (expect-eq !>(expected) !>(res))
 ::
-::  %take-with-sig
+::  %pull
 ::
-::++  test-take-with-sig-known-reciever
+::++  test-pull-known-reciever
 ::  ^-  tang
 ::  ::  owner-1 is giving owner-2 the ability to take 30
 ::  =/  to            id:caller-2
@@ -375,7 +375,7 @@
 ::      (sham typed-message)
 ::    priv-1
 ::  =/  =action:sur:fun
-::    [%take-with-sig to `account from-account amount nonce deadline sig]
+::    [%pull to `account from-account amount nonce deadline sig]
 ::  ::  this bad boi guzzles gas like crazy
 ::  =/  shel=shell:smart
 ::    [caller-2 ~ id.p:fungible-wheat rate 999.999.999 town-id 0]
@@ -390,7 +390,7 @@
 ::  =/  expected=granary  (gilt ~[updated-1 updated-2])
 ::  =/  res=granary       (int:big expected p.land.milled)
 ::  (expect-eq !>(expected) !>(res))
-::++  test-take-with-sig-unknown-reciever  ^-  tang
+::++  test-pull-unknown-reciever  ^-  tang
 ::  ::  owner-1 is giving owner-2 the ability to take 30
 ::  =/  to  id:caller-2
 ::  =/  account  ~  :: unkown account this time
@@ -404,7 +404,7 @@
 ::             (sham typed-message)
 ::           priv-1
 ::  =/  =action:sur
-::    [%take-with-sig to account from-account amount nonce deadline sig]
+::    [%pull to account from-account amount nonce deadline sig]
 ::  =/  =cart
 ::    [id.p:fungible-wheat [id:caller-2 0] batch-num town-id] :: cart no longer knows account-2' rice
 ::  =/  updated-1=grain:smart
@@ -427,7 +427,7 @@
 ::  =/  res=chick:smart
 ::    (~(write cont cart) action)
 ::  =/  correct-act=action:sur
-::    [%take-with-sig id:caller-2 `new-id 0x1.beef amount nonce deadline sig]
+::    [%pull id:caller-2 `new-id 0x1.beef amount nonce deadline sig]
 ::  =/  correct=chick:smart
 ::    %+  continuation
 ::      [me.cart town-id.cart correct-act]~

@@ -38,7 +38,7 @@
   %-  ~(gas by *(map @tas json))
   :~  [%give (need (de-json:html give-cord))]
       [%take (need (de-json:html take-cord))]
-      [%take-with-sig (need (de-json:html take-with-sig-cord))]
+      [%pull (need (de-json:html pull-cord))]
       [%set-allowance (need (de-json:html set-allowance-cord))]
       [%mint (need (de-json:html mint-cord))]
       [%deploy (need (de-json:html deploy-cord))]
@@ -66,7 +66,7 @@
     ]
     '''
   ::
-  ++  take-with-sig-cord
+  ++  pull-cord
     ^-  cord  :: TODO: Sig
     '''
     [

@@ -50,7 +50,7 @@
     $:  balance=@ud                    ::  the amount of tokens someone has
         allowances=(pmap address @ud)  ::  a map of pubkeys they've permitted to spend their tokens and how much
         metadata=id                    ::  address of the rice holding this token's metadata
-        nonce=@ud                      ::  necessary for gasless approves
+        nonces=(pmap address @ud)       ::  necessary for gasless approves
     ==
   ::
   +$  approval
@@ -67,7 +67,7 @@
   +$  action
     $%  give
         take
-        take-with-sig
+        pull
         set-allowance
         mint
         deploy
@@ -87,8 +87,8 @@
         from-account=id
         to-account=(unit id)
     ==
-  +$  take-with-sig
-    $:  %take-with-sig
+  +$  pull
+    $:  %pull
         to=address
         from-account=id
         to-account=(unit id)
@@ -131,7 +131,7 @@
     ?~  to-account.act
       ::  if receiver doesn't have an account, try to produce one for them
       =/  =id  (fry-rice me.cart to.act town-id.cart salt.giver)
-      =+  [amount.act ~ metadata.data.giver 0]
+      =+  [amount.act ~ metadata.data.giver *(pmap address @ud)]
       =+  receiver=[salt.giver %account - id me.cart to.act town-id.cart]
       (result [%&^giver ~] [%&^receiver ~] ~ ~)
     ::  otherwise, add amount given to the existing account for that address
@@ -161,7 +161,7 @@
     ?~  to-account.act
       ::  if receiver doesn't have an account, try to produce one for them
       =/  =id  (fry-rice me.cart to.act town-id.cart salt.giver)
-      =+  [amount.act ~ metadata.data.giver 0]
+      =+  [amount.act ~ metadata.data.giver *(pmap address @ud)]
       =+  receiver=[salt.giver %account - id me.cart to.act town-id.cart]
       (result [%&^giver ~] [%&^receiver ~] ~ ~)
     ::  otherwise, add amount given to the existing account for that address
@@ -175,10 +175,10 @@
     ::  return the result: two changed grains
     (result [%&^giver %&^receiver ~] ~ ~ ~)
   ::
-  ++  take-with-sig
-    |=  [=cart act=take-with-sig:sur]
+  ++  pull
+    |=  [=cart act=pull:sur]
     ^-  chick
-    ::  %take-with-sig allows for gasless approvals for transferring tokens
+    ::  %pull allows for gasless approvals for transferring tokens
     ::  the giver must sign the from-account id and the typed +$approve struct above
     ::  and the taker will pass in the signature to take the tokens
     =/  giv=grain          (need (scry from-account.act))
@@ -203,9 +203,9 @@
     ::  create new rice for reciever and add it to state
       =+  (fry-rice to.act me.cart town-id.cart salt.p.giv)
       =/  new=grain
-        [%& salt.p.giv %account [amount.act ~ metadata.giver 0] - me.cart to.act town-id.cart]
+        [%& salt.p.giv %account [amount.act ~ metadata.giver *(pmap address @ud)] - me.cart to.act town-id.cart]
       ::  continuation call: %take to rice found in book
-      =/  =action:sur  [%take-with-sig to.act id.p.giv `id.p.new amount.act nonce.act deadline.act sig.act]
+      =/  =action:sur  [%pull to.act id.p.giv `id.p.new amount.act nonce.act deadline.act sig.act]
       %+  continuation
         [me.cart town-id.cart action]~
       (result [new ~] ~ ~ ~)
@@ -218,7 +218,7 @@
         data.p.giv
       %=  giver
         balance  (sub balance.giver amount.act)
-        nonce  .+(nonce.giver)
+        nonce    (pmap address @ud)
       ==
     ==
     (result [giv rec ~] ~ ~ ~)
@@ -262,7 +262,7 @@
     ?~  account.m
       ::  create new account for receiver
       =/  =id  (fry-rice me.cart to.m town-id.cart salt.data.meta)
-      =+  [amount.m ~ token.act 0]
+      =+  [amount.m ~ token.act *(pmap address @ud)]
       =+  receiver=[salt.data.meta %account - id me.cart to.m town-id.cart]
       %=  $
         mints.act         t.mints.act
