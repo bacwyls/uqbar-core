@@ -101,6 +101,7 @@
     %unit  compute-unit
     %set   compute-set
     %map   compute-map
+    %each  compute-each
   ==
 ::
 ++  compute-map
@@ -155,6 +156,24 @@
   |=  [jolds=(list json) data=*]
   ^-  json
   (compute-list jolds (tree-noun-to-list data))
+::
+++  compute-each
+  |=  [jolds=(list json) data=*]
+  ^-  json
+  ?~  jolds              [%s (crip (noah !>(data)))]
+  ?:  =(1 (lent jolds))  [%s (crip (noah !>(data)))]
+  ?.  =(2 (lent jolds))
+    ?.  &(?=(@ -.data) |(=(0 -.data) =(1 -.data)))
+      [%s (crip (noah !>(data)))]
+    ?:  =(0 -.data)
+      ?
+    ?.  ?=(^ data)  [%s (crip (noah !>(data)))]
+    (compute-multiword t.jolds +.data)
+  ?.  &(?=(@ -.data) |(=(0 -.data) =(1 -.data)))
+    [%s (crip (noah !>(data)))]
+  %+  prefix-and-mold-atom
+    ?:(=(0 -.data) p.i.jolds p.i.t.jolds)
+  +.data
 ::
 ++  compute-unit
   |=  [jolds=(list json) data=*]
