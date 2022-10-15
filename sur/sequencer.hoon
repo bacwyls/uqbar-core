@@ -48,6 +48,7 @@
       ::  transactions
       [%receive-assets assets=granary]
       [%receive eggs=(set egg:smart)]
+      [%remove-txn hash=@ux]
       ::  batching
       [%trigger-batch ~]
   ==

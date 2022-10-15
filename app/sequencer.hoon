@@ -154,6 +154,20 @@
       =+  [%uqbar-write !>(`write:uqbar`[%receipt hash (sign:sig our.bowl now.bowl hash) usig])]
       [%pass /submit-transaction/(scot %ux hash) %agent [src.bowl %uqbar] %poke -]
     ::
+    ::  take a transaction out of the mempool.
+    ::
+        %remove-txn
+      ?>  =(src.bowl our.bowl)
+      ::  TODO change basket from set to map, in order to make this easier
+      =/  new-basket=(list [@ux egg:smart])
+        %+  murn  ~(tap in basket)
+        |=  [hash=@ux =egg:smart]
+        ?.  =(hash hash.act)
+          `[hash egg]
+        ::  remove specified txn
+        ~
+      `state(basket (~(gas in *^basket) new-basket))
+    ::
     ::  batching
     ::
         %trigger-batch
