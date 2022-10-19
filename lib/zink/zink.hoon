@@ -349,7 +349,7 @@
       |=  $:  [key=[s=^index ax=@ud] val=[xi=^index p=^index path=(list ax-hint)]]
               nax-map=^^ax-map
           ==
-      %+  ~(put by ax-map)  key
+      %+  ~(put by nax-map)  key
       %_    val
           xi  (~(got by rexi) xi.val)
           path
@@ -359,10 +359,14 @@
         a(xi (~(got by rexi) xi.a))
       ::
       ==
+      ::
       ++  rexi
         ~+  %-  tail
         %+  roll  sorted
         |=  [[^ [oxi=^index *]] [nxi=@ud m=(map ^index ^index)]]
+        ~&  oxi+oxi
+        ~&  nxi+nxi
+        ~&  ax+[+<-<+]
         [+(nxi) (~(put by m) oxi nxi)]
       ::
       ++  sorted
