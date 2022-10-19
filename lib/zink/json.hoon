@@ -46,7 +46,7 @@
       %-  pairs
       :~  'jmp_dest'^(num 0)
           pred+(en-pred pred.hin)
-          path+(en-path path.hin)
+          :: path+(en-path path.hin)
       ==
         [%1 *]  (pairs 'jmp_dest'^(num 1) pred+(en-pred +.hin) ~)
     ::
@@ -81,7 +81,7 @@
           sf1+(hints sf1.hin)
           sf2+(hints sf2.hin)
           leaf+(num leaf.hin)
-          path+(en-path path.hin)
+          :: path+(en-path path.hin)
       ==
     ::
         [%10 * * * * *]
@@ -91,7 +91,7 @@
           sf1+(hints sf1.hin)
           sf2+(hints sf2.hin)
           oldleaf+(num old-leaf.hin)
-          path+(en-path-10 path.hin)
+          :: path+(en-path-10 path.hin)
       ==
     ::
         [%11 * * %| @]

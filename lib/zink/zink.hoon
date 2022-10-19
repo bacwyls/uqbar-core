@@ -1,11 +1,12 @@
 /-  *zink
 /+  *zink-pedersen, *zink-json
+/+  *mip
 =>  |%
     +$  good      (unit *)
     +$  fail      (list [@ta *])
     +$  res       (each good fail)
     +$  body      (pair res hints)
-    +$  appendix  [cax=cache =arena ai=@ bud=(unit @ud) scrys=(list *)]
+    +$  appendix  [cax=cache =ax-map xi=@ud =arena ai=@ud bud=(unit @ud) scrys=(list *)]
     +$  book      (pair body appendix)
     --
 |%
@@ -15,7 +16,7 @@
   ^-  book
   %.  [s f test-mode]
   %*  .  zink
-    app  [cax ~ 0 bud ?~(scry ~ [`*`u.scry ~])]
+    app  [cax ~ 0 ~ 0 bud ?~(scry ~ [`*`u.scry ~])]
   ==
 ::
 ++  create-hints
@@ -34,6 +35,8 @@
   ^-  book
   =-  -(q.p q.p.-)
   |^  ^-  book
+  =-  -(q ax-post(app q))
+  |-  ^-  book
   =^  si  app  (index s)
   =^  fi  app  (index f)
   ?+    f
@@ -57,11 +60,10 @@
     [[%& `prod] [%cons [si fi pi] hed-hints tal-hints]~]^app
   ::
       [%0 axis=@]
-    ?:  =(axis 0)  [%|^trace [%0 [si fi 0] ~]~]^app
-    =/  tups  (frag axis.f s)
-    =^  pi  app  (index -.tups)
+    ?:  =(axis 0)  [%|^trace [%0 [si fi 0] 0]~]^app
+    =^  tups  app  (frag axis.f s)
     :_  app
-    [%& `p.tups]^[%0 [si fi pi] q.tups]~
+    [%& `n.tups]^[%0 [si fi ni.tups] ai.tups]~
   ::
       [%1 const=*]
     =^  pi  app  (index const.f)
@@ -185,53 +187,54 @@
   ::
       [%9 axis=@ core=*]
     ?:  =(axis 0)
-      ~&  256  [%|^trace [%9 [si fi 0] ~ ~ 0 ~]~]^app
+      ~&  256  [%|^trace [%9 [si fi 0] ~ ~ 0 0]~]^app
     =^  [=core=res =core=hints]  app
       $(f core.f)
     ?:  ?=(%| -.core-res)
-      ~&  211  [%|^trace [%9 [si fi 0] core-hints ~ 0 ~]~]^app
-    ?~  p.core-res  [%|^trace [%9 [si fi 0] core-hints ~ 0 ~]~]^app
+      ~&  211  [%|^trace [%9 [si fi 0] core-hints ~ 0 0]~]^app
+    ?~  p.core-res  [%|^trace [%9 [si fi 0] core-hints ~ 0 0]~]^app
     =/  arm  (frag axis.f u.p.core-res)
-    ?:  ?=(%| -.p.arm)
-      ~&  269+[s axis.f]
-      :_  app
-      [%|^trace [%9 [si fi 0] core-hints ~ `@ud`axis.f q.arm]~]
-    =^  [=res =res=hints]  app  $(s u.p.core-res, f p.arm)
-    ?:  ?=(%| -.res)  [%|^trace [%9 [si fi 0] core-hints res-hints 0 ~]~]^app
-    ?~  p.res  [%&^~ [%9 [si fi 0] core-hints res-hints 0 ~]~]^app
+    ::?:  ?=(%| -.p.arm)
+    ::  ~&  269+[s axis.f]
+    ::  :_  app
+    ::  [%|^trace [%9 [si fi 0] core-hints ~ `@ud`axis.f q.arm]~]
+    =^  [=res =res=hints]  app  $(s u.p.core-res, f n.arm)
+    ?:  ?=(%| -.res)  [%|^trace [%9 [si fi 0] core-hints res-hints ni.arm ai.arm]~]^app
+    ?~  p.res  [%&^~ [%9 [si fi 0] core-hints res-hints ni.arm ai.arm]~]^app
     =^  pi  app  (index u.p.res)
-    [res [%9 [si fi pi] core-hints res-hints `@ud`axis.f q.arm]~]^app
+    [res [%9 [si fi pi] core-hints res-hints ni.arm ai.arm]~]^app
   ::
       [%10 [axis=@ value=*] target=*]
-    ?:  =(0 axis.f)
-      ~&  232  [%|^trace [%10 [si fi 0] ~ ~ 0 ~]~]^app
-    =^  [=val=res =val=hints]  app
-      $(f value.f)
-    ?:  ?=(%| -.val-res)
-      ~&  239  [%|^trace [%10 [si fi 0] val-hints ~ 0 ~]~]^app
-    ?~  p.val-res
-      [%&^~ [%10 [si fi 0] val-hints ~ 0 ~]~]^app
-    =^  [=tar=res =tar=hints]  app
-      $(f target.f)
-    ?:  ?=(%| -.tar-res)
-      ~&  235
-      :_  app
-      :-  %|^trace
-      [%10 [si fi 0] val-hints tar-hints 0 ~]~
-    ?~  p.tar-res
-      :_  app
-      :-  %&^~
-      [%10 [si fi 0] val-hints tar-hints 0 ~]~
-    =^  mutant  app
-      (edit axis.f u.p.tar-res u.p.val-res)
-    =^  pi  app  (index mut.p.mutant)
-    =^  ol  app  (index old.p.mutant)
-    :_  app
-    :-  %&^`mut.p.mutant
-    :_  ~
-    :*  %10  [si fi pi]  val-hints
-        tar-hints  ol  q.mutant
-    ==
+    !!
+    :: ?:  =(0 axis.f)
+    ::   ~&  232  [%|^trace [%10 [si fi 0] ~ ~ 0 ~]~]^app
+    :: =^  [=val=res =val=hints]  app
+    ::   $(f value.f)
+    :: ?:  ?=(%| -.val-res)
+    ::   ~&  239  [%|^trace [%10 [si fi 0] val-hints ~ 0 ~]~]^app
+    :: ?~  p.val-res
+    ::   [%&^~ [%10 [si fi 0] val-hints ~ 0 ~]~]^app
+    :: =^  [=tar=res =tar=hints]  app
+    ::   $(f target.f)
+    :: ?:  ?=(%| -.tar-res)
+    ::   ~&  235
+    ::   :_  app
+    ::   :-  %|^trace
+    ::   [%10 [si fi 0] val-hints tar-hints 0 ~]~
+    :: ?~  p.tar-res
+    ::   :_  app
+    ::   :-  %&^~
+    ::   [%10 [si fi 0] val-hints tar-hints 0 ~]~
+    :: =^  mutant  app
+    ::   (edit axis.f u.p.tar-res u.p.val-res)
+    :: =^  pi  app  (index mut.p.mutant)
+    :: =^  ol  app  (index old.p.mutant)
+    :: :_  app
+    :: :-  %&^`mut.p.mutant
+    :: :_  ~
+    :: :*  %10  [si fi pi]  val-hints
+    ::     tar-hints  ol  q.mutant
+    :: ==
   ::
       [%11 tag=@ next=*]
     =^  itag  app  (index tag.f) 
@@ -303,17 +306,189 @@
     :: TODO you need to also include the edit along the path - i.e. [?(%2 %3) oldcellindex  newcellindex]
     |=  [axis=@ target=* value=*]
     ^-  [(pair [mut=* old=*] (list (trel ?(%2 %3) ^index ^index))) appendix]
+    !!
+    :: ?~  axis  !!
+    :: =/  frg  (frag axis target)
+    :: =/  mutant  .*(target [10 [axis 1 value] 0 1])
+    :: =/  frgmut  (frag axis mutant)
+    :: =/  efrg
+    ::   %+  turn  (zip q.frg q.frgmut)
+    ::   |=  [a=(pair ?(%2 %3) ^index) b=(pair ?(%2 %3) ^index)]
+    ::   ^-  (trel ?(%2 %3) ^index ^index)
+    ::   ?>  =(p.a p.b)
+    ::   [p.a q.a q.b]
+    :: [mutant^p.frg efrg]^app
+  ::
+  +$  rax-map  (mip ^index axis [rc=@ud p=^index path=(list ax-hint)])
+  ++  ax-post
+    |^
+    =|  =rax-map
+    =/  layer  ax-map
+    |-  ^-  appendix
+    ?:  =(~ layer)  app(ax-map (finalize rax-map))
+    =-  $(ax-map ax-map, layer layer, rax-map rax-map, xi xi)
+    %-  ~(rep by layer)
+    |:  :*  [[s=*^index ax=*@ud] [*^index p=*^index path=*(list ax-hint)]]
+            [ax-map=ax-map layer=`^ax-map`~ rax-map=rax-map xi=xi]
+        ==
+    ^-  [^^ax-map ^^ax-map ^^rax-map @ud]
+    =/  sf  (sub-frag path rax-map)
+    =-  [(~(uni by ax-map) layer) layer sf xi]
+    %-  ~(rep bi sf)
+    |:  :*  [s=*^index ax=*@ud [rc=*@ud p=*^index path=*(list ax-hint)]]
+            [layer=layer xi=xi]
+        ==
+    ?:  (~(has by ax-map) s ax)  layer^xi
+    ?.  (lth 0 rc)  layer^xi
+    (~(put by layer) [s ax] xi p path)^[+(xi)]
+    ::
+    ++  reorder
+      |=  =^ax-map
+      |^
+      %-  ~(rep by ax-map)
+      |=  $:  [key=[s=^index ax=@ud] val=[xi=^index p=^index path=(list ax-hint)]]
+              nax-map=^^ax-map
+          ==
+      %+  ~(put by ax-map)  key
+      %_    val
+          xi  (~(got by rexi) xi.val)
+          path
+        %+  turn  path.val
+        |=  a=ax-hint
+        ?.  ?=(%cache -.a)  a
+        a(xi (~(got by rexi) xi.a))
+      ::
+      ==
+      ++  rexi
+        ~+  %-  tail
+        %+  roll  sorted
+        |=  [[^ [oxi=^index *]] [nxi=@ud m=(map ^index ^index)]]
+        [+(nxi) (~(put by m) oxi nxi)]
+      ::
+      ++  sorted
+        %+  sort  ~(tap by ax-map)
+        |=  [[[* ax-a=@ud] *] [[* ax-b=@ud] *]]
+        (lth ax-a ax-b)
+      ::
+      --
+    ::
+    ++  finalize
+      |=  =rax-map
+      =/  sorted  (sorted-rax rax-map)
+      %-  reorder  %-  ~(rut by ax-map)
+      |=  [[s=^index ax=@ud] [xi=^index p=^index path=(list ax-hint)]]
+      =*  entry  +<+
+      =|  out=(list ax-hint)
+      ?:  ?=([[?(%2 %3) *] ~] path)  entry
+      |-
+      ?~  path  entry(path (flop out))
+      ?:  =(1 ax)  entry(path (flop out))
+      ?>  ?=(?(%2 %3) -.i.path)
+      =/  step
+        %+  skim  (~(gut by sorted) s ~)
+        |=  [ax=@ud *]
+        ?:  &(?=(?(%2 %3) ax) =(ax ^ax))  &
+        =/  n  (dec (met 0 ax))
+        ?.  (lth ax ^ax)  |
+        .=  (cut 0 [0 n] (rsh [0 n] ^ax))
+            (cut 0 [0 n] ax)
+      ?>  ?=(^ step)
+      %_    $
+        s     p.i.step
+        ax    (gep-b ax ax.i.step)
+        path  (slag (dec (met 0 ax.i.step)) `(list ax-hint)`path)
+        out   [[%cache s xi:(~(got by ax-map) s ax.i.step)] out]
+      ==
+    ::
+    ++  gep-b
+      |=  [c=axis a=axis]
+      ?:  =(c a)  1
+      =/  met-c  (met 0 c)
+      =/  met-a  (met 0 a)
+      =/  dif  (sub met-c met-a)
+      =/  b-bits  (sub c (lsh [0 dif] a))
+      (add b-bits (bex dif))
+    ::
+    ++  sorted-rax
+      |=  =rax-map
+      ~+  %-  ~(run by rax-map)
+      |=  a=(map @ud [rc=@ud p=^index path=(list ax-hint)])
+      ^-  (list [ax=@ud [rc=@ud p=^index path=(list ax-hint)]])
+      %+  sort  (skim ~(tap by a) |=([ax=@ud [rc=@ud *]] (lth 1 rc)))
+      |=  [[rc-a=@ud *] [rc-b=@ud *]]
+      (lth rc-b rc-a)
+    ::
+    ++  sub-frag
+      |=  [path=(list ax-hint) =rax-map]
+      ^-  ^rax-map
+      =-  (roll - [+(rax-map rax-map)]:[. peg-path])
+      ^-  (list (list ax-hint))
+      %-  zing
+      %+  turn  (tails path)
+      |=  path=(list ax-hint)
+      ^-  (list (list ax-hint))
+      (heads path)
+    ::
+    ++  peg-path
+      |=  [path=(list ax-hint) =rax-map]
+      ^-  ^rax-map
+      ?~  path  !!
+      ?>  ?=(?(%2 %3) -.i.path)
+      =/  end  (head (flop `(list ax-hint)`path))
+      ?>  ?=(?(%2 %3) -.end)
+      =;  ax=@ud
+        =/  rax  (~(gut bi rax-map) s.i.path ax [rc=0 p.end path])
+        (~(put bi rax-map) s.i.path ax rax(rc +(rc.rax)))
+      %+  roll  t.path
+      |:  [step=*ax-hint lax=`@ud`-.i.path]
+      ?>  ?=(?(%2 %3) -.step) :: todo: unnecessary, should always pass
+      (peg lax -.step)
+    ::
+    ++  tails
+      |=  path=(list ax-hint)
+      ^-  (list (list ax-hint))
+      |-
+      ?~  path  ~
+      :-  path
+      $(path t.path)
+    ::
+    ++  heads
+      |=  path=(list ax-hint)
+      (turn (tails (flop path)) flop)
+    ::
+    --
+  ::
+  ++  frag
+    |=  [axis=@ s=*]
+    =/  start-axis  axis
+    =/  start-s  s
+    =^  is  app  (index s)
+    |^  ^-  [[n=* ni=^index ai=^index] appendix] :: TODO add crash axis?
+    =|  path=(list ax-hint)
+    |-  ^-  [(trel * ^index ^index) appendix]
+    =^  ip  app  (index s)
+    ?:  =(1 axis)
+      =?  .  !(~(has by ax-map) [is axis])
+        .(xi +(xi), ax-map (~(put by ax-map) [is start-axis] [xi ip (flop path)]))
+      [start-s ip p:(~(got by ax-map) [is start-axis])]^app
     ?~  axis  !!
-    =/  frg  (frag axis target)
-    =/  mutant  .*(target [10 [axis 1 value] 0 1])
-    =/  frgmut  (frag axis mutant)
-    =/  efrg
-      %+  turn  (zip q.frg q.frgmut)
-      |=  [a=(pair ?(%2 %3) ^index) b=(pair ?(%2 %3) ^index)]
-      ^-  (trel ?(%2 %3) ^index ^index)
-      ?>  =(p.a p.b)
-      [p.a q.a q.b]
-    [mutant^p.frg efrg]^app
+    :: ?@  s  [%|^s^(gep-a start-axis axis) path]^app
+    =/  pick  (cap axis)
+    =/  child  ?-(pick %2 -.s, %3 +.s)
+    =^  ic  app  (index child)
+    %_  $
+      s     child
+      axis  (mas axis)
+      path  [[pick ip ic] path]
+    ==
+    ::
+    ::  solve for a in c = (peg a b)
+    ++  gep-a
+      |=  [p=@ b=@]
+      =/  metb  (met 0 b)
+      (rsh [0 (dec metb)] p)
+    ::
+    --
   ::
   ++  zip
     |*  [a=(list) b=(list)]
@@ -343,31 +518,6 @@
     =/  h  (hash:pedersen hh ht)
     :-  h
     app(cax (~(put by cax) n h))
-  ::
-  ++  frag
-    |=  [axis=@ s=*]
-    =|  path=(list (pair ?(%2 %3) ^index))
-    =/  start-axis  axis
-    |^  ^-  (pair * _path) :: TODO add crash axis?
-    ?:  =(1 axis)
-      [s path]
-    ?~  axis  !!
-    ?@  s  [%|^s^(gep-a start-axis axis) path]
-    =/  pick  (cap axis)
-    =/  child  ?-(pick %2 -.s, %3 +.s)
-    =^  pari  app  (index s)
-    %=  $
-      s     child
-      axis  (mas axis)
-      path  [[pick pari] path]
-    ==
-    ::
-    ::  solve for a in c = (peg a b)
-    ++  gep-a
-      |=  [p=@ b=@]
-      =/  metb  (met 0 b)
-      (rsh [0 (dec metb)] p)
-    --
   ::
   ++  zink-loop  $
   ::

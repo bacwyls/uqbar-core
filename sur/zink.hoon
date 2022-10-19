@@ -6,6 +6,12 @@
 +$  index  @ud
 +$  tnoun  $%([%atom p=@] [%cell (pair index index)])
 +$  arena  (map * (pair tnoun index))  :: noun to [[ihead itail] inoun]
++$  ax-map  (map [s=index ax=@ud] [xi=index p=index path=(list ax-hint)])
++$  ax-hint
+  $~  [%2 0 0]
+  $%  [?(%2 %3) s=index p=index]
+      [%cache s=index xi=index]
+  ==
 +$  cache  (map * phash)
 +$  phash  @                     ::  Pedersen hash
 :: +$  hash-req
@@ -16,7 +22,7 @@
 +$  pred  [s=index f=index p=index]
 +$  cairo-hint
   $%
-      [%0 =pred path=(list (pair ?(%2 %3) index))]
+      [%0 =pred path=index]
       [%1 =pred]
       [%2 =pred sf1=hints sf2=hints sf3=hints]
       [%3 =pred sf=hints]
@@ -25,8 +31,8 @@
       [%6 =pred sf1=hints sf2=hints] :: got rid of the subf that doesn't get run...should be fine?
       [%7 =pred sf1=hints sf2=hints]
       [%8 =pred sf1=hints sf2=hints]
-      [%9 =pred sf1=hints sf2=hints leaf=index path=(list (pair ?(%2 %3) index))]
-      [%10 =pred sf1=hints sf2=hints old-leaf=index path=(list (trel ?(%2 %3) index index))]
+      [%9 =pred sf1=hints sf2=hints leaf=index path=index]
+      [%10 =pred sf1=hints sf2=hints old-leaf=index path=index]
       [%11 =pred sf=hints (each [tag=index clue=hints] @)]
       :: [%12 (each [sf1=subf sf2=subf] phash)]
       [%jet =jet data=json] :: not every jet will return the whole sample as a noun
