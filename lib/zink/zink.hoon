@@ -389,6 +389,7 @@
       ?:  =(1 ax)  entry(path (flop out))
       ?>  ?=(?(%2 %3) -.i.path)
       =/  step
+        %-  head
         %+  skim  (~(gut by sorted) s ~)
         |=  [ax=@ud *]
         ?:  &(?=(?(%2 %3) ax) =(ax ^ax))  &
@@ -396,12 +397,11 @@
         ?.  (lth ax ^ax)  |
         .=  (cut 0 [0 n] (rsh [0 n] ^ax))
             (cut 0 [0 n] ax)
-      ?>  ?=(^ step)
       %_    $
-        s     p.i.step
-        ax    (gep-b ax ax.i.step)
-        path  (slag (dec (met 0 ax.i.step)) `(list ax-hint)`path)
-        out   [[%cache s xi:(~(got by ax-map) s ax.i.step)] out]
+        s     p.step
+        ax    (gep-b ax ax.step)
+        path  (slag (dec (met 0 ax.step)) `(list ax-hint)`path)
+        out   [[%cache s xi:(~(got by ax-map) s ax.step)] out]
       ==
     ::
     ++  gep-b
