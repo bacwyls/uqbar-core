@@ -1500,7 +1500,7 @@
         ?>  ?=([@ ^] sub-path)
         t.sub-path
       =/  payload=?(@ux [@ux @ux])
-        ?:  ?=(?([@ @ ~] [@ @ %history ~]) sub-path)
+        ?:  ?=(?([@ ~] [@ @ ~] [@ @ %history ~]) sub-path)
           (slav %ux i.sub-path)
         ?>  ?=(?([@ @ @ ~] [@ @ @ %history ~]) sub-path)
         [(slav %ux i.sub-path) (slav %ux i.t.sub-path)]
