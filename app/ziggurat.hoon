@@ -2,9 +2,14 @@
 ::
 ::  Contract Playground
 ::
-/+  *zig-ziggurat, smart=zig-sys-smart,
-    engine=zig-sys-engine, seq=zig-sequencer,
-    default-agent, dbug, verb
+/+  dbug,
+    default-agent,
+    verb,
+    *zig-ziggurat,
+    engine=zig-sys-engine,
+    seq=zig-sequencer,
+    smart=zig-sys-smart,
+    ui=zig-indexer
 /*  smart-lib-noun  %noun  /lib/zig/sys/smart-lib/noun
 /*  zink-cax-noun   %noun  /lib/zig/sys/hash-cache/noun
 ::
@@ -537,6 +542,20 @@
     =/  pre=^path  /(scot %p our.bowl)/(scot %tas des)/(scot %da now.bowl)
     =/  res        .^(? %cu (weld pre pat))
     ``json+!>(`json`[%b res])
+  ::
+      [%contract-interface-types @ ^]
+    =/  des=@ta    i.t.t.path
+    =/  pat=^path  `^path`t.t.t.path
+    =/  pre=^path  /(scot %p our.bowl)/(scot %tas des)/(scot %da now.bowl)
+    :: =/  txt=@t     .^(@t %cx (weld pre pat))
+    :: =/  res        (text-to-zebra-noun txt smart-lib-vase)
+    =/  res  .^(vase %ca (weld pre pat))  ::  TODO: transform this so I can get arms
+    :^  ~  ~  %json
+    !>  ^-  json
+    %-  pairs:enjs:format
+    :+  [%interface (tas-to-json:enjs:ui interface-json:res)]
+      [%types (tas-to-json:enjs:ui types-json:res)]
+    ~
   ::
   ::  APP-PROJECT JSON
   ::
