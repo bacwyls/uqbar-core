@@ -60,6 +60,7 @@
           [%read-desk ~]
           ::
           [%add-to-state source=id:smart holder=id:smart town-id=@ux salt=@ label=@tas noun=*]
+          [%udpate-item =id:smart source=id:smart holder=id:smart town-id=@ux salt=@ label=@tas noun=*]
           [%delete-from-state =id:smart]
           ::
           [%add-test name=(unit @t) for-contract=id:smart action=@t expected-error=(unit @ud)]  ::  name optional

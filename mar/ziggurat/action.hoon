@@ -26,6 +26,7 @@
           [%compile-contracts ul]
           [%read-desk ul]
           [%add-to-state parse-data-without-id]
+          [%update-item parse-data]
           [%delete-from-state (ot ~[[%id (se %ux)]])]
           [%add-test (ot ~[[%name so:dejs-soft:format] [%for-contract (se %ux)] [%action so] [%expected-error ni:dejs-soft:format]])]
           [%add-test-expectation (ot ~[[%test-id (se %ux)] [%expected parse-data-without-id]])]

@@ -241,6 +241,22 @@
       :-  (make-project-update project.act project)^~
       state(projects (~(put by projects) project.act project))
     ::
+        %update-item
+      =/  =project  (~(got by projects) project.act)
+      =/  noun-text  ;;(@t noun.act)
+      =/  =data:smart
+        =+  (text-to-zebra-noun noun-text smart-lib-vase)
+        [id.act source.act holder.act town-id.act salt.act label.act -]
+      =:  p.chain.project
+        %+  put:big:engine  p.chain.project
+        [id.data %&^data]
+      ::
+          noun-texts.project
+        (~(put by noun-texts.project) id.data noun-text)
+      ==
+      :-  (make-project-update project.act project)^~
+      state(projects (~(put by projects) project.act project))
+    ::
         %delete-from-state
       ::  remove a grain from the granary
       =/  =project  (~(got by projects) project.act)

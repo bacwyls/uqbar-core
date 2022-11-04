@@ -23,6 +23,7 @@
           [%save-file (ot ~[[%name so] [%text so]])]
           [%delete-file (ot ~[[%name so]])]
           [%add-to-state parse-rice-without-id]
+          [%update-item parse-data]
           [%delete-from-state (ot ~[[%id (se %ux)]])]
           [%add-test (ot ~[[%name so:dejs-soft:format] [%action so] [%expected-error ni:dejs-soft:format]])]
           [%add-test-expectation (ot ~[[%id (se %ux)] [%expected parse-rice-without-id]])]
