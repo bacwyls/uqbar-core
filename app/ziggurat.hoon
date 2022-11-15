@@ -89,6 +89,8 @@
     ^-  (quip card _state)
     ?-    -.+.act
         %new-project
+      ?:  (~(has in (~(gas in *(set @t)) ~['fresh-piers' 'assembled'])) project.act)
+        ~|("%ziggurat: choose a different project name, {<project.act>} is reserved" !!)
       ~&  desk
       ~&  >  "scrying..."
       =/  desks=(set desk)

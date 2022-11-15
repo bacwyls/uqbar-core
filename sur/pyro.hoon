@@ -43,6 +43,12 @@
       [%snap-ships =path hers=(list ship)]
       [%restore-snap =path]
       [%clear-snap =path]
+      [%export-snap =path]
+      [%import-snap jam-file-path=path snap-label=path]
+      [%export-fresh-piers ~]
+      [%import-fresh-piers jam-file-path=path]
+      [%export-assembled ~]
+      [%import-assembled jam-file-path=path]
   ==
 ::
 +$  aqua-effects
